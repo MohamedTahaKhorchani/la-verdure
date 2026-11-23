@@ -1,0 +1,17 @@
+node_modules
+dist
+dist-electron
+release
+release-final
+release-final-a5-two-up
+packaging/default-product-images
+exports
+.DS_Store
+*.log
+.env
+.env.*
+coverage
+*.local
+.vite
+.cache
+images produits

@@ -1,0 +1,129 @@
+{
+  "name": "top-fruit-affiches",
+  "productName": "La Verdure",
+  "version": "1.0.0",
+  "description": "Catalogue et impression d'affiches prix pour magasin de fruits et légumes — 100 % hors ligne",
+  "author": "La Verdure",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "dist-electron/main.js",
+  "scripts": {
+    "ensure-electron": "node scripts/ensure-electron.mjs",
+    "predev": "node scripts/ensure-electron.mjs",
+    "predist": "node scripts/ensure-electron.mjs",
+    "prepack": "node scripts/ensure-electron.mjs",
+    "predist:win": "node scripts/ensure-electron.mjs",
+    "dev": "vite",
+    "build": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.app.json --noEmit && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "pack": "npm run build && electron-builder --mac --arm64 --dir",
+    "dist": "npm run build && electron-builder --mac --arm64",
+    "dist:win": "node scripts/release-windows-final.mjs"
+  },
+  "dependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.6.2",
+    "sql.js": "^1.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/sql.js": "^1.4.9",
+    "@vitejs/plugin-react": "^4.5.2",
+    "electron": "^36.4.0",
+    "electron-builder": "^26.0.12",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-plugin-electron": "^0.29.0",
+    "vite-plugin-electron-renderer": "^0.14.6",
+    "vitest": "^3.2.4"
+  },
+  "build": {
+    "appId": "fr.topfruit.affiches",
+    "productName": "La Verdure",
+    "executableName": "La Verdure",
+    "copyright": "Copyright © La Verdure",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "dist-electron/**/*",
+      "resources/placeholders/**/*",
+      "node_modules/sql.js/dist/sql-wasm.js",
+      "node_modules/sql.js/dist/sql-wasm.wasm",
+      "node_modules/sql.js/package.json",
+      "!**/*.map",
+      "!**/README*",
+      "!**/readme*",
+      "!**/*.md",
+      "!packaging/**/*",
+      "!release/**/*",
+      "!release-final/**/*",
+      "!exports/**/*",
+      "!image_pipeline/**/*",
+      "!tests/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "resources/placeholders",
+        "to": "placeholders",
+        "filter": ["**/*"]
+      },
+      {
+        "from": "node_modules/sql.js/dist/sql-wasm.wasm",
+        "to": "sql-wasm.wasm"
+      },
+      {
+        "from": "packaging/default-product-images",
+        "to": "default-product-images",
+        "filter": ["**/*", "!.DS_Store"]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.business",
+      "target": [
+        { "target": "dmg", "arch": ["arm64"] },
+        { "target": "zip", "arch": ["arm64"] }
+      ],
+      "identity": null,
+      "hardenedRuntime": false,
+      "gatekeeperAssess": false,
+      "artifactName": "${productName}-${version}-${arch}.${ext}"
+    },
+    "win": {
+      "target": [
+        { "target": "nsis", "arch": ["x64"] },
+        { "target": "dir", "arch": ["x64"] }
+      ],
+      "artifactName": "${productName}-${version}-${arch}.${ext}",
+      "signAndEditExecutable": false,
+      "requestedExecutionLevel": "asInvoker"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "allowElevation": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "La Verdure",
+      "uninstallDisplayName": "La Verdure",
+      "artifactName": "La Verdure Setup.${ext}",
+      "deleteAppDataOnUninstall": false
+    },
+    "dmg": {
+      "title": "La Verdure",
+      "contents": [
+        { "x": 130, "y": 220 },
+        { "x": 410, "y": 220, "type": "link", "path": "/Applications" }
+      ]
+    },
+    "asar": true,
+    "compression": "maximum",
+    "electronLanguages": ["fr", "en-US"]
+  }
+}
